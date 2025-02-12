@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Главная страница
+{% endblock %}
+
+{% block content %}
+<a>Главная страница</a>
+
+{% for element in articles %}
+
+<li><h5>{{ element.title }}</h5>  {{ element.content }} <br></li>
+&nbsp
+
+{% endfor %}
+{% endblock %}
