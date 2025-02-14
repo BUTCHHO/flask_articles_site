@@ -1,5 +1,6 @@
+import sqlalchemy.exc
 from flask import Flask, render_template, redirect, request, url_for
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user, current_user
 
 from models import db, login_manager, Post, Account
 from secret_staff import secret_key
@@ -9,14 +10,17 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = secret_key
 login_manager.init_app(app)
-
 db.init_app(app)
 with app.app_context():
     db.create_all()
 
-
-@app.route('/')
+@app.route('/', methods=['POST', 'GET'])
 def home():
+    if request.method == 'POST':
+        if current_user.is_authenticated:
+            Post.like_post(request.form, current_user)
+
+
     articles = Post.get_all()
     return render_template('home.html',  articles = articles)
 
@@ -24,7 +28,7 @@ def home():
 @login_required
 def create():
     if request.method == 'POST':
-        match Post.create_article(request.form):
+        match Post.create_article(request.form, current_user):
             case True:
                 return redirect(url_for('home'))
             case False:
@@ -36,10 +40,16 @@ def create():
     else:
         return render_template('create.html')
 
-
 @app.route('/about')
 def about():
     return render_template('about.html',)
+
+@app.route('/profile/<username>')
+def profile_page(username):
+    if current_user.is_authenticated:
+
+        return 'ye'
+    return 'ne'
 
 @app.route('/signup', methods=['POST', 'GET'])
 def sign_up():
@@ -70,4 +80,4 @@ def sign_out():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run('0.0.0.0', port=5000)

@@ -8,3 +8,36 @@ header {
     padding: 0.5px;
 }
 
+/* Стили для шапки */
+.site-header {
+    background-color: #f8f9fa; /* Светлый фон */
+    padding: 10px 0;
+    border-bottom: 1px solid #e9ecef; /* Граница снизу */
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-links {
+    display: flex;
+    gap: 20px; /* Расстояние между ссылками */
+}
+
+.header-link {
+    text-decoration: none;
+    color: #000; /* Цвет текста */
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.header-link:hover {
+    color: #007bff; /* Цвет при наведении */
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+}
