@@ -1,6 +1,6 @@
-from datetime import datetime
-from idlelib.autocomplete import ATTRS
 from types import NoneType
+
+from datetime import datetime
 from sqlalchemy import event
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager
