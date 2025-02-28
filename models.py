@@ -45,6 +45,7 @@ class Post(db.Model):
         except Exception as err:
             return err
 
+
     @classmethod
     def delete_all(cls):
         db.session.query(cls).delete()
