@@ -1,0 +1,1 @@
+LOGS_FILE_LOCATION = "logs/"

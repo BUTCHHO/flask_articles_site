@@ -1,5 +1,7 @@
+
 from flask import Flask, render_template, redirect, request, url_for
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user, current_user
+from flask_migrate import Migrate, migrate
 
 from models import db, login_manager, Post, Account
 from secret_staff import secret_key
@@ -9,37 +11,58 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = secret_key
 login_manager.init_app(app)
-
 db.init_app(app)
 with app.app_context():
     db.create_all()
 
+migration =  Migrate(app, db)
 
-@app.route('/')
+
+
+@app.route('/', methods=['POST', 'GET'])
 def home():
+    if request.method == 'POST':
+        if current_user.is_authenticated:
+            if 'liked_article_id' in request.form:
+                Post.like_post(request.form, current_user)
+            elif request.form['delete_acc']:
+                Account.query.filter_by(id=current_user.id).delete()
+                db.session.delete(current_user)
+                db.session.commit()
     articles = Post.get_all()
     return render_template('home.html',  articles = articles)
+
+
 
 @app.route('/create', methods=['POST', 'GET'])
 @login_required
 def create():
     if request.method == 'POST':
-        match Post.create_article(request.form):
+        match Post.create_article(request.form, current_user):
             case True:
                 return redirect(url_for('home'))
             case False:
                 return "не введен заголовок или содержимое"
-            case None:
-                #функция возвращает None если возник Exception
-                return "ошибка при добавлении статьи"
-
+            case _: #если вернул Exception
+                return 'ошибка при добавлении статьи'
     else:
         return render_template('create.html')
+
 
 
 @app.route('/about')
 def about():
     return render_template('about.html',)
+
+
+
+@app.route('/profile/<username>')
+def profile_page(username):
+    if current_user.is_authenticated:
+        return 'this page is in development. You successfully entered this page'
+    return 'this page is in development and ypu have to authorize before opening it'
+
+
 
 @app.route('/signup', methods=['POST', 'GET'])
 def sign_up():
@@ -49,10 +72,11 @@ def sign_up():
                 return redirect(url_for('sign_in'))
             case False:
                 return redirect(url_for('sign_up'))
-            case None:
-                #функция возвращает None если произошёл Exception
+            case _: #если вернул Exception
                 return "ошибка при добавлении аккаунта"
     return render_template('sign_up.html')
+
+
 
 @app.route('/signin', methods=['POST','GET'])
 def sign_in():
@@ -62,6 +86,8 @@ def sign_in():
             return redirect(url_for('home'))
         return 'не удалось войти'
     return render_template('sign_in.html')
+
+
 
 @app.route('/logout')
 def sign_out():
