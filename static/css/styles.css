@@ -1,14 +1,13 @@
+/* Ваши стили для шапки */
 header {
     position: sticky;
     padding: 10px;
     top: 0;
     z-index: 1000;
     background: white;
-
     padding: 0.5px;
 }
 
-/* Стили для шапки */
 .site-header {
     background-color: #f8f9fa; /* Светлый фон */
     padding: 10px 0;
@@ -40,4 +39,51 @@ header {
 .header-buttons {
     display: flex;
     align-items: center;
+}
+
+/* Мои стили для страницы профиля */
+.profile-container {
+    margin-top: 20px;
+    text-align: center;
+    padding: 20px;
+}
+
+.username {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-top: 20px;
+    color: #333;
+}
+
+.bio {
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 10px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.followers-count {
+    font-size: 1rem;
+    color: #777;
+    margin-top: 10px;
+}
+
+.posts-link {
+    margin-top: 20px;
+}
+
+.posts-link .btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.posts-link .btn:hover {
+    background-color: #0056b3;
 }
