@@ -7,39 +7,40 @@
 {% block content %}
 <a>Главная страница</a>
 <main class="container mt-4">
-        <!-- Список статей -->
-        {% for article in articles %}
-        <div class="article mb-4">
-            <!-- Имя автора -->
-            <p class="article-author">{{ article.author_id.name }}</p>
+    <!-- Список статей -->
+    {% for article in articles %}
+    <div class="article mb-4">
+        <!-- Имя автора -->
+        <p class="article-author">{{ article.author.name }}</p>
 
-            <!-- Заголовок статьи -->
-            <h2 class="article-title">{{ article.title }}</h2>
+        <!-- Заголовок статьи -->
+        <h2 class="article-title">{{ article.title }}</h2>
 
-            <!-- Содержимое статьи -->
-            <p class="article-content">{{ article.content }}</p>
+        <!-- Содержимое статьи -->
+        <p class="article-content">{{ article.content }}</p>
 
-            <!-- Дата и отметки "нравится" -->
-            <div class="article-footer d-flex justify-content-between align-items-center">
-                <span class="article-date text-muted">{{ article.creation_date }}</span>
-                <div class="d-flex align-items-center">
-                    <span class="article-likes me-2">
-                        <span class="badge bg-primary">{{ article.likes }}</span> Нравится
-                    </span>
-                    <!-- Кнопка "нравится" -->
-                    <form method="POST" class="d-inline">
-						<input type="hidden" name="liked_article_id" value="{{ article.id }}">
-                        <button type="submit" class="btn btn-primary btn-sm">Нравится</button>
-                    </form>
-                </div>
+        <!-- Дата и отметки "нравится" -->
+        <div class="article-footer d-flex justify-content-between align-items-center">
+            <span class="article-date text-muted">{{ article.creation_date }}</span>
+            <div class="d-flex align-items-center">
+                <span class="article-likes me-2">
+                    <span class="badge bg-primary">{{ article.likes }}</span> Нравится
+                </span>
+                <!-- Кнопка "нравится" -->
+                <form method="POST" class="d-inline">
+                    <input type="hidden" name="liked_article_id" value="{{ article.id }}">
+                    <button type="submit" class="btn btn-primary btn-sm">Нравится</button>
+                </form>
+                <!-- Кнопка "Комментарии" -->
+                <a href="{{ url_for('post_page', post_id=article.id) }}" class="btn btn-primary btn-sm ms-2">Комментарии</a>
             </div>
         </div>
-        <hr> <!-- Разделитель между статьями -->
-        {% endfor %}
-    </main>
+    </div>
+    <hr> <!-- Разделитель между статьями -->
+    {% endfor %}
+</main>
 
-    <!-- Подключение Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+<!-- Подключение Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 {% endblock %}

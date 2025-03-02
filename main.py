@@ -1,36 +1,53 @@
 
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, abort
 from flask_login import login_user, login_required, logout_user, current_user
-from flask_migrate import Migrate, migrate
-
-from models import db, login_manager, Post, Account
+from models import db, migrate, login_manager, Post, Account, Comment
 from secret_staff import secret_key
 
-
+#инициализация
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = secret_key
 login_manager.init_app(app)
 db.init_app(app)
+migrate.init_app(app, db)
 with app.app_context():
     db.create_all()
 
-migration =  Migrate(app, db)
 
 
-
+#обработка маршрутов
 @app.route('/', methods=['POST', 'GET'])
 def home():
     if request.method == 'POST':
         if current_user.is_authenticated:
             if 'liked_article_id' in request.form:
-                Post.like_post(request.form, current_user)
-            elif request.form['delete_acc']:
-                Account.query.filter_by(id=current_user.id).delete()
-                db.session.delete(current_user)
-                db.session.commit()
+                Post.like_post(request.form, current_user) #в функции уже реализовано удаление лайка
+
+            #удаление аккаунта не реализовано на фронтенде
+            # elif request.form['delete_acc']:
+            #     Account.query.filter_by(id=current_user.id).delete()
+            #     db.session.delete(current_user)
+            #     db.session.commit()
     articles = Post.get_all()
     return render_template('home.html',  articles = articles)
+
+
+
+@app.route('/home/<post_id>', methods=['POST', 'GET'])
+def post_page(post_id):
+    target_post = Post.query.filter_by(id=int(post_id)).first()
+    if target_post == None:
+        abort(404)
+    if request.method == 'POST':
+        if current_user.is_authenticated:
+            if 'write_comment' in request.form:
+                Comment.create_commentary(request.form,current_user,target_post)
+            elif 'like_comment' in request.form:
+                Comment.like_comment(request.form, current_user)
+            elif 'liked_article_id' in request.form:
+                Post.like_post(request.form, current_user)
+    return render_template('article_extended.html', article=target_post)
 
 
 

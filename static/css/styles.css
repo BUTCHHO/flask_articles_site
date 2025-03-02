@@ -87,3 +87,34 @@ header {
 .posts-link .btn:hover {
     background-color: #0056b3;
 }
+
+/* Стили для комментариев */
+.comment {
+    padding: 10px;
+    border: 1px solid #e9ecef;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    margin-bottom: 10px;
+}
+
+.comment-author {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.comment-content {
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.comment-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment-likes {
+    font-size: 0.9rem;
+    color: #777;
+}
