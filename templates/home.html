@@ -8,31 +8,32 @@
 <a>Главная страница</a>
 <main class="container mt-4">
     <!-- Список статей -->
-    {% for article in articles %}
+    {% for post in posts %}
     <div class="article mb-4">
         <!-- Имя автора -->
-        <p class="article-author">{{ article.author.name }}</p>
+        <p class="article-author">{{ post.author.name }}</p>
 
         <!-- Заголовок статьи -->
-        <h2 class="article-title">{{ article.title }}</h2>
+        <h2 class="article-title">{{ post.title }}</h2>
 
         <!-- Содержимое статьи -->
-        <p class="article-content">{{ article.content }}</p>
+        <p class="article-content">{{ post.content }}</p>
 
         <!-- Дата и отметки "нравится" -->
         <div class="article-footer d-flex justify-content-between align-items-center">
-            <span class="article-date text-muted">{{ article.creation_date }}</span>
+            <span class="article-date text-muted">{{ post.creation_date }}</span>
             <div class="d-flex align-items-center">
                 <span class="article-likes me-2">
-                    <span class="badge bg-primary">{{ article.likes }}</span> Нравится
+                    <span class="badge bg-primary">{{ post.likes }}</span> Нравится
                 </span>
                 <!-- Кнопка "нравится" -->
                 <form method="POST" class="d-inline">
-                    <input type="hidden" name="liked_article_id" value="{{ article.id }}">
+                    <input type="hidden" name="form_type" value="like_post">
+                    <input type="hidden" name="liked_post_id" value="{{ post.id }}">
                     <button type="submit" class="btn btn-primary btn-sm">Нравится</button>
                 </form>
                 <!-- Кнопка "Комментарии" -->
-                <a href="{{ url_for('post_page', post_id=article.id) }}" class="btn btn-primary btn-sm ms-2">Комментарии</a>
+                <a href="{{ url_for('post_page', post_id=post.id) }}" class="btn btn-primary btn-sm ms-2">Комментарии</a>
             </div>
         </div>
     </div>

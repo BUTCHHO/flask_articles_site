@@ -1,1 +1,1 @@
-LOGS_FILE_LOCATION = "logs/"
+LOGS_FILE_LOCATION = "/logs"

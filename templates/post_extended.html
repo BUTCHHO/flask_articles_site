@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Комментарии к статье: {{ post.title }}
+{% endblock %}
+
+{% block content %}
+<main class="container mt-4">
+    <!-- Отображение статьи -->
+    <div class="article mb-4">
+        <!-- Имя автора -->
+        <p class="article-author">{{ post.author.name }}</p>
+
+        <!-- Заголовок статьи -->
+        <h2 class="article-title">{{ post.title }}</h2>
+
+        <!-- Содержимое статьи -->
+        <p class="article-content">{{ post.content }}</p>
+
+        <!-- Дата и отметки "нравится" -->
+        <div class="article-footer d-flex justify-content-between align-items-center">
+            <span class="article-date text-muted">{{ post.creation_date }}</span>
+            <div class="d-flex align-items-center">
+                <span class="article-likes me-2">
+                    <span class="badge bg-primary">{{ post.likes }}</span> Нравится
+                </span>
+                <!-- Кнопка "нравится" -->
+                <form method="POST" class="d-inline">
+                    <input type="hidden" name="form_type" value="like_post">
+                    <input type="hidden" name="liked_post_id" value="{{ post.id }}">
+                    <button type="submit" class="btn btn-primary btn-sm">Нравится</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Форма для добавления комментария -->
+    <div class="add-comment mb-4">
+        <h3>Добавить комментарий</h3>
+        <form method="post" class="form-control">
+            <input type="hidden" name="form_type" value="write_comment">
+            <input type="text" name="comment_content" placeholder="Оставить комментарий" class="form-control"><br>
+            <button class="btn btn-success", type='submit'>Комментировать</button>
+        </form>
+    </div>
+
+    <!-- Отображение комментариев -->
+    <div class="comments-section">
+        <h3>Комментарии</h3>
+        {% for comment in post.comments %}
+        <div class="comment mb-3">
+            <!-- Имя пользователя, оставившего комментарий -->
+            <p class="comment-author">{{ comment.author.name }}</p>
+
+            <!-- Содержимое комментария -->
+            <p class="comment-content">{{ comment.content }}</p>
+
+            <!-- Дата и отметки "нравится" -->
+            <div class="comment-footer d-flex justify-content-between align-items-center">
+                <!-- Дата написания комментария -->
+                <span class="comment-date text-muted">{{ comment.creation_date }}</span>
+
+                <!-- Количество лайков и кнопка "нравится" -->
+                <div class="d-flex align-items-center">
+                    <!-- Количество лайков -->
+                    <span class="comment-likes me-2">
+                        <span class="badge bg-primary">{{ comment.likes }}</span> Нравится
+                    </span>
+                    <!-- Кнопка "нравится" -->
+                    <form method="POST" class="d-inline">
+                        <input type="hidden" name="form_type" value="like_comment">
+                        <input type="hidden" name="liked_comment_id" value="{{ comment.id }}">
+                        <button type="submit" class="btn btn-primary btn-sm">Нравится</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <hr> <!-- Разделитель между комментариями -->
+        {% endfor %}
+    </div>
+</main>
+
+<!-- Подключение Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+{% endblock %}
