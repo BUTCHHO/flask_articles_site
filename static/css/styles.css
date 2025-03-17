@@ -118,3 +118,31 @@ header {
     font-size: 0.9rem;
     color: #777;
 }
+
+/* Стили для страницы профиля */
+.profile-container {
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.username {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.bio {
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 10px;
+}
+
+.btn-link {
+    color: #007bff;
+    text-decoration: none;
+    margin-right: 15px;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}

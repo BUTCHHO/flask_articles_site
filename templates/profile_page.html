@@ -1,50 +1,33 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Профиль пользователя</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css"> \
-</head>
-<body>
-    <header class="site-header">
-        <div class="container">
-            <div class="header-content">
-                <!-- Ссылки по центру -->
-                <div class="header-links">
-                    <a href="{{ url_for('home') }}" class="header-link">Главная страница</a>
-                    <a href="{{ url_for('about') }}" class="header-link">О сайте</a>
-                    <a href="{{ url_for('create') }}" class="header-link">Добавить статью</a>
-                </div>
+{% extends "base.html" %}
 
-                <!-- Кнопки справа -->
-                <div class="header-buttons">
-                    <a href="{{ url_for('sign_out') }}" class="btn btn-outline-primary me-2">Выйти</a>
-                    <a href="{{ url_for('sign_in') }}" class="btn btn-outline-primary me-2">Войти</a>
-                    <a href="{{ url_for('sign_up') }}" class="btn btn-primary">Регистрация</a>
-                </div>
+{% block title %}Профиль {{ user.name }}{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="row">
+        <!-- Левая часть с именем пользователя -->
+        <div class="col-md-3">
+            <h1 class="username">{{ user.name }}</h1>
+        </div>
+
+        <!-- Правая часть с био и дополнительной информацией -->
+        <div class="col-md-9">
+            <p class="bio">{{ user.bio or 'Пользователь пока не добавил информацию о себе.' }}</p>
+
+            <div class="mt-4">
+                <a href="" class="btn btn-link">Статьи</a>
+                <a href="" class="btn btn-link">Подписчики ({{ user.followers_count }})</a>
+                <a href="" class="btn btn-link">Подписан на </a>
+                <a href="" class="btn btn-link">Понравились ({{ user.liked_posts_count }})</a>
+
+                <!-- Кнопка "Подписаться" -->
+                <form method="POST" class="d-inline">
+                    <input type="hidden" name="form_type" value="follow">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <button type="submit" class="btn btn-primary">Подписаться</button>
+                </form>
             </div>
         </div>
-    </header>
-
-    <div class="container profile-container">
-        <div class="username">
-            {{ user.username }}
-        </div>
-        <div class="followers-count">
-            Подписчиков: {{ user.followers_count }}
-        </div>
-        <div class="bio">
-            {{ user.bio }}
-        </div>
-        <div class="posts-link">
-            <a href="{{ url_for('user_posts', user_id=user.id) }}" class="btn">Посмотреть все посты</a>
-        </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+</div>
+{% endblock %}
